@@ -114,7 +114,7 @@ class WDTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WDListene
         scm_actions.WDListenerMixin.__init__(self)
         self._update_popup_cb()
         self.add_notification_cb(enotify.E_CHANGE_WD, self._update_popup_cb)
-        self.get_selection().connect('changed', lambda seln: self.action_groups.update_condns(get_masked_seln_conditions(seln)))
+        self.get_selection().connect("changed", lambda seln: self.action_groups.update_condns(get_masked_seln_conditions(seln)))
     def _update_popup_cb(self, **kwargs):
         if scm_gui_ifce.SCM.in_valid_wspce:
             self.set_popup("/scmic_files_popup")
@@ -123,7 +123,7 @@ class WDTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WDListene
     def populate_action_groups(self):
         self.action_groups[actions.AC_DONT_CARE].add_actions(
             [
-                ('wd_files_menu_files', None, _('Working Directory')),
+                ("wd_files_menu_files", None, _("Working Directory")),
             ])
         self.action_groups[scm_actions.AC_IN_SCM_PGND|actions.AC_SELN_UNIQUE|file_tree.AC_ONLY_FILES_SELECTED].add_actions(
             [

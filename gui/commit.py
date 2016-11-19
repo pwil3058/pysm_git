@@ -41,14 +41,14 @@ class StagedDiffNotebook(diff.DiffTextsWidget):
     def _get_diff_text(self):
         # TODO: think about making -M a selectable option
         try:
-            return git_gui_ifce.SCM.get_diff('-M', '--staged')
+            return git_gui_ifce.SCM.get_diff("-M", "--staged")
         except CmdFailure as failure:
             dialogue.main_window.report_failure(failure)
             return failure.result.stdout
 
 class MessageWidget(text_edit.MessageWidget):
     UI_DESCR = \
-        '''
+        """
         <ui>
           <menubar name="commit_summary_menubar">
             <menu name="commit_summary_menu" action="menu_summary">
@@ -65,12 +65,12 @@ class MessageWidget(text_edit.MessageWidget):
             <toolitem action="text_edit_author"/>
           </toolbar>
         </ui>
-        '''
+        """
     get_user_name_and_email = lambda _self: git_gui_ifce.SCM.get_author_name_and_email()
     def populate_action_groups(self):
         self.action_groups[0].add_actions(
             [
-                ("menu_summary", None, _('_Message')),
+                ("menu_summary", None, _("_Message")),
             ])
     def set_initial_contents(self):
         self.set_contents(git_gui_ifce.SCM.get_commit_template())
@@ -84,11 +84,11 @@ class CommitWidget(Gtk.VPaned, enotify.Listener):
         self.msg_widget = MessageWidget()
         vbox = Gtk.VBox()
         hbox = Gtk.HBox()
-        menubar = self.msg_widget.ui_manager.get_widget('/commit_summary_menubar')
+        menubar = self.msg_widget.ui_manager.get_widget("/commit_summary_menubar")
         hbox.pack_start(menubar, fill=False, expand=False, padding=0)
         auto_save_action = self.msg_widget.action_groups.get_action("text_edit_toggle_auto_save")
         hbox.pack_end(gutils.ActionCheckButton(auto_save_action), fill=False, expand=False, padding=0)
-        toolbar = self.msg_widget.ui_manager.get_widget('/commit_summary_toolbar')
+        toolbar = self.msg_widget.ui_manager.get_widget("/commit_summary_toolbar")
         toolbar.set_style(Gtk.ToolbarStyle.BOTH_HORIZ)
         toolbar.set_orientation(Gtk.Orientation.HORIZONTAL)
         hbox.pack_end(toolbar, fill=False, expand=False, padding=0)
@@ -99,7 +99,7 @@ class CommitWidget(Gtk.VPaned, enotify.Listener):
         self.note_book = self.DIFF_NOTEBOOK()
         vbox = Gtk.VBox()
         hbox = Gtk.HBox()
-        hbox.pack_start(Gtk.Label(_('Diffs')), fill=True, expand=False, padding=0)
+        hbox.pack_start(Gtk.Label(_("Diffs")), fill=True, expand=False, padding=0)
         hbox.pack_end(self.note_book.tws_display, expand=False, fill=False, padding=0)
         vbox.pack_start(hbox, expand=False, fill=True, padding=0)
         vbox.pack_start(self.note_book, expand=True, fill=True, padding=0)
@@ -122,13 +122,13 @@ class CommitDialog(dialogue.ListenerDialog):
     def __init__(self, parent=None):
         flags = Gtk.DialogFlags.DESTROY_WITH_PARENT
         dialogue.ListenerDialog.__init__(self, None, parent, flags)
-        self.set_title(_('Commit Staged Changes: %s') % utils.cwd_rel_home())
+        self.set_title(_("Commit Staged Changes: %s") % utils.cwd_rel_home())
         self.commit_widget = self.COMMIT_WIDGET()
         self.vbox.pack_start(self.commit_widget, expand=True, fill=True, padding=0)
         self.set_focus_child(self.commit_widget.msg_widget)
         self.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                                        Gtk.STOCK_OK, Gtk.ResponseType.OK)
-        self.connect('response', self._handle_response_cb)
+        self.connect("response", self._handle_response_cb)
     def _finish_up(self, clear_save=False):
         with self.showing_busy():
             self.commit_widget.msg_widget.finish_up(clear_save)
@@ -143,7 +143,7 @@ class CommitDialog(dialogue.ListenerDialog):
             if self.commit_widget.msg_widget.get_auto_save():
                 self._finish_up()
             else:
-                qtn = _('Unsaved changes to summary will be lost.\n\nCancel anyway?')
+                qtn = _("Unsaved changes to summary will be lost.\n\nCancel anyway?")
                 if dialogue.main_window.ask_yes_no(qtn):
                     self._finish_up()
         else:
@@ -166,7 +166,7 @@ class AmendCommitDialog(CommitDialog):
     COMMIT_WIDGET = AmendCommitWidget
     def __init__(self, parent=None):
         CommitDialog.__init__(self, parent)
-        self.set_title(_('Amend Last Commit: %s') % utils.cwd_rel_home())
+        self.set_title(_("Amend Last Commit: %s") % utils.cwd_rel_home())
 
 class ShowCommitData:
     def __init__(self, commit_hash):
@@ -190,9 +190,9 @@ class ShowCommitData:
             elif last_diff_plus:
                 last_diff_plus.trailing_junk.append(lines[index])
             index += 1
-        self.header = ''.join(lines[0:diff_starts_at])
+        self.header = "".join(lines[0:diff_starts_at])
     def __str__(self):
-        string = '' if self.header is None else str(self.header)
+        string = "" if self.header is None else str(self.header)
         for diff_plus in self.diff_pluses:
             string += str(diff_plus)
         return string
@@ -222,7 +222,7 @@ class ShowCommitWidget(Gtk.VPaned):
         # Simple display of header data for the time being
         vbox = Gtk.VBox()
         hbox = Gtk.HBox()
-        hbox.pack_start(Gtk.Label(_('Header')), fill=True, expand=False, padding=0)
+        hbox.pack_start(Gtk.Label(_("Header")), fill=True, expand=False, padding=0)
         vbox.pack_start(hbox, expand=False, fill=True, padding=0)
         self.header = textview.Widget(aspect_ratio=0.25)
         self.header.set_contents(commit_data.header)
@@ -234,7 +234,7 @@ class ShowCommitWidget(Gtk.VPaned):
         self.note_book = diff.DiffPlusNotebook(commit_data.diff_pluses)
         vbox = Gtk.VBox()
         hbox = Gtk.HBox()
-        hbox.pack_start(Gtk.Label(_('Diffs')), fill=True, expand=False, padding=0)
+        hbox.pack_start(Gtk.Label(_("Diffs")), fill=True, expand=False, padding=0)
         hbox.pack_end(self.note_book.tws_display, expand=False, fill=False, padding=0)
         vbox.pack_start(hbox, expand=False, fill=True, padding=0)
         vbox.pack_start(self.note_book, expand=True, fill=True, padding=0)
@@ -246,22 +246,22 @@ class ShowCommitDialog(dialogue.ListenerDialog):
     def __init__(self, parent, commit_hash):
         flags = Gtk.DialogFlags.DESTROY_WITH_PARENT
         dialogue.ListenerDialog.__init__(self, None, parent, flags, buttons=(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
-        self.set_title(_('Show Commit: {}: {}').format(commit_hash, utils.cwd_rel_home()))
+        self.set_title(_("Show Commit: {}: {}").format(commit_hash, utils.cwd_rel_home()))
         self.vbox.pack_start(ShowCommitWidget(commit_hash), expand=True, fill=True, padding=0)
-        self.connect('response', self._handle_response_cb)
+        self.connect("response", self._handle_response_cb)
     def _handle_response_cb(self, dialog, response_id):
         self.destroy()
 
 actions.CLASS_INDEP_AGS[scm_actions.AC_IN_SCM_PGND].add_actions(
     [
         # TODO: be more fussy about when staged commit enabled?
-        ('git_commit_staged_changes', wsm_icons.STOCK_COMMIT, _('Commit'), None,
-         _('Commit the staged changes'),
+        ("git_commit_staged_changes", wsm_icons.STOCK_COMMIT, _("Commit"), None,
+         _("Commit the staged changes"),
          lambda _action: CommitDialog().show()
         ),
         # TODO: be more fussy about when amend commit enabled?
-        ('git_amend_last_commit', wsm_icons.STOCK_AMEND_COMMIT, _('Amend'), None,
-         _('Amend the last commit'),
+        ("git_amend_last_commit", wsm_icons.STOCK_AMEND_COMMIT, _("Amend"), None,
+         _("Amend the last commit"),
          lambda _action: AmendCommitDialog().show()
         ),
     ])

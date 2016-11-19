@@ -44,7 +44,7 @@ class IndexFileTreeModel(file_tree.FileTreeModel):
 
 class IndexFileTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WDListenerMixin, dialogue.ClientMixin):
     MODEL = IndexFileTreeModel
-    UI_DESCR = '''
+    UI_DESCR = """
     <ui>
       <menubar name="index_files_menubar">
         <menu name="index_files_menu" action="index_files_menu_files">
@@ -67,7 +67,7 @@ class IndexFileTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WD
         <separator/>
       </popup>
     </ui>
-    '''
+    """
     AUTO_EXPAND = True
     def __init__(self, hide_clean=False, **kwargs):
         file_tree.FileTreeView.__init__(self, hide_clean=hide_clean)
@@ -76,12 +76,12 @@ class IndexFileTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WD
     def populate_action_groups(self):
         self.action_groups[actions.AC_DONT_CARE].add_actions(
             [
-                ('index_files_menu_files', None, _('Staged _Files')),
+                ("index_files_menu_files", None, _("Staged _Files")),
             ])
         self.action_groups[scm_actions.AC_IN_SCM_PGND|actions.AC_SELN_MADE].add_actions(
             [
-                ('index_unstage_selected_files', Gtk.STOCK_REMOVE, _('_Unstage'), None,
-                 _('Remove/unstage the selected files/directories from the index'), self.unstage_selected_files_acb),
+                ("index_unstage_selected_files", Gtk.STOCK_REMOVE, _("_Unstage"), None,
+                 _("Remove/unstage the selected files/directories from the index"), self.unstage_selected_files_acb),
             ])
     def unstage_selected_files_acb(self, _action=None):
         file_list = self.get_selected_fsi_paths()

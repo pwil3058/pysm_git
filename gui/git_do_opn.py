@@ -35,7 +35,7 @@ class DoOpnMixin(doop.DoOperationMixin):
     def git_do_copy_file_to_index(self, file_path):
         # TODO: move nuts and bolts down to scm_ifce_git
         # TODO: use os_utils function for most of this
-        PROMPT = _('Enter target path for copy of "{0}"'.format(file_path))
+        PROMPT = _("Enter target path for copy of \"{0}\"".format(file_path))
         as_file_path = self.ask_file_path(PROMPT, existing=False, suggestion=file_path)
         if as_file_path is None or os.path.relpath(as_file_path) == file_path:
             return
@@ -55,7 +55,7 @@ class DoOpnMixin(doop.DoOperationMixin):
                     return
         import shutil
         from ...gtx import console
-        console.LOG.start_cmd('cp -p {0} {1}'.format(file_path, as_file_path))
+        console.LOG.start_cmd("cp -p {0} {1}".format(file_path, as_file_path))
         try:
             shutil.copy2(file_path, as_file_path)
         except IOError as edata:

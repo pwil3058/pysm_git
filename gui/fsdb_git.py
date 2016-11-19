@@ -29,32 +29,32 @@ from ...gtx import fsdb
 from ...bab import utils
 
 class FileStatus:
-    UNMODIFIED = '  '
-    WD_ONLY_MODIFIED = ' M'
-    WD_ONLY_DELETED = ' D'
-    MODIFIED = 'M '
-    MODIFIED_MODIFIED = 'MM'
-    MODIFIED_DELETED = 'MD'
-    ADDED = 'A '
-    ADDED_MODIFIED = 'AM'
-    ADDED_DELETED = 'AD'
-    DELETED = 'D '
-    DELETED_MODIFIED = 'DM'
-    RENAMED = 'R '
-    RENAMED_MODIFIED = 'RM'
-    RENAMED_DELETED = 'RD'
-    COPIED = 'C '
-    COPIED_MODIFIED = 'CM'
-    COPIED_DELETED = 'CD'
-    UNMERGED = 'UU'
-    UNMERGED_ADDED = 'AA'
-    UNMERGED_ADDED_US = 'AU'
-    UNMERGED_ADDED_THEM = 'UA'
-    UNMERGED_DELETED = 'DD'
-    UNMERGED_DELETED_US = 'DU'
-    UNMERGED_DELETED_THEM = 'DA'
-    NOT_TRACKED = '??'
-    IGNORED = '!!'
+    UNMODIFIED = "  "
+    WD_ONLY_MODIFIED = " M"
+    WD_ONLY_DELETED = " D"
+    MODIFIED = "M "
+    MODIFIED_MODIFIED = "MM"
+    MODIFIED_DELETED = "MD"
+    ADDED = "A "
+    ADDED_MODIFIED = "AM"
+    ADDED_DELETED = "AD"
+    DELETED = "D "
+    DELETED_MODIFIED = "DM"
+    RENAMED = "R "
+    RENAMED_MODIFIED = "RM"
+    RENAMED_DELETED = "RD"
+    COPIED = "C "
+    COPIED_MODIFIED = "CM"
+    COPIED_DELETED = "CD"
+    UNMERGED = "UU"
+    UNMERGED_ADDED = "AA"
+    UNMERGED_ADDED_US = "AU"
+    UNMERGED_ADDED_THEM = "UA"
+    UNMERGED_DELETED = "DD"
+    UNMERGED_DELETED_US = "DU"
+    UNMERGED_DELETED_THEM = "DA"
+    NOT_TRACKED = "??"
+    IGNORED = "!!"
     MODIFIED_LIST = [
             # TODO: review order of modified set re directory decoration
             # order is preference order for directory decoration based on contents' states
@@ -105,7 +105,7 @@ _WD_DECO_MAP = {
 
 # TODO: think about different deco map for the index
 
-_FILE_DATA_RE = re.compile(r'(("([^"]+)")|(\S+))( -> (("([^"]+)")|(\S+)))?')
+_FILE_DATA_RE = re.compile(r"""(("([^"]+)")|(\S+))( -> (("([^"]+)")|(\S+)))?""")
 
 class GitFileData(fsdb.FileData):
     STATUS_DECO_MAP = _WD_DECO_MAP
@@ -117,7 +117,7 @@ def get_git_file_data(string):
     match = _FILE_DATA_RE.match(string[3:])
     path = match.group(3) if match.group(3) else match.group(4)
     if match.group(5):
-        extra_data = fsdb.RFD(extradatamatch.group(8) if match.group(8) else match.group(9), '->')
+        extra_data = fsdb.RFD(extradatamatch.group(8) if match.group(8) else match.group(9), "->")
     else:
         extra_data = None
     return GitFileData(path, string[:2], extra_data)

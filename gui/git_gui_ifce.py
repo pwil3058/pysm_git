@@ -98,7 +98,7 @@ class Interface:
         return do_action_cmd(cmd, scm.E_INDEX_MOD|scm.E_FILE_CHANGES, None, [("Use -f if you really want to add them.", CmdResult.Suggest.FORCE)])
     @staticmethod
     def do_amend_commit(msg):
-        cmd = ['git', 'commit', '--amend', '-m', msg]
+        cmd = ["git", "commit", "--amend", "-m", msg]
         return do_action_cmd(cmd, scm.E_INDEX_MOD|scm.E_COMMIT|scm.E_FILE_CHANGES, None, [])
     @staticmethod
     def do_checkout_branch(branch):
