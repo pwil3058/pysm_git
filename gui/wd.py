@@ -134,7 +134,7 @@ class WDTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WDListene
             ])
         self.action_groups[scm_actions.AC_IN_SCM_PGND|AC_ONLY_SUBMODULES_SELECTED|actions.AC_SELN_UNIQUE].add_actions(
             [
-                ("wd_cd_to_submodule", Gtk.STOCK_REMOVE, _("Change Directory"), None,
+                ("wd_cd_to_submodule", Gtk.STOCK_REMOVE, _("Change Directory To"), None,
                  _("Chanage working directory to the selected submodule's root directory"),
                  lambda _action=None: scm_wspce.chdir(self.get_selected_fsi_path())
                 ),
