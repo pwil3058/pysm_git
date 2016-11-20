@@ -71,7 +71,8 @@ class Interface:
                     return False
                 else:
                     raise
-        if attr_name == "in_valid_wspce": return runext.run_cmd(["git", "config", "--local", "-l"]).is_ok
+        if attr_name == "in_valid_wspce":
+            return runext.run_cmd(["git", "config", "--local", "-l"]).is_ok
         raise AttributeError(attr_name)
     @staticmethod
     def copy_clean_version_to(filepath, target_name):
@@ -345,6 +346,9 @@ class Interface:
     @staticmethod
     def get_wd_file_db():
         return fsdb_git.WsFileDb()
+    @staticmethod
+    def is_sub_repo(abs_dir_path):
+        return os.path.isfile(os.path.join(abs_dir_path, ".git"))
     @staticmethod
     def is_ready_for_import():
         return (True, "") if index_is_empty() else (False, _("Index is NOT empty\n"))
