@@ -23,6 +23,7 @@ from ...bab import CmdFailure
 from ...bab import utils
 
 from ...patch_diff import patchlib
+from ...patch_diff import diffstat
 
 from ...gtx import actions
 from ...gtx import dialogue
@@ -204,7 +205,7 @@ class ShowCommitData:
         return [diff_plus.get_file_path_plus(strip_level=strip_level) for diff_plus in self.diff_pluses]
     def get_diffstat_stats(self, strip_level=None):
         strip_level = self._adjusted_strip_level(strip_level)
-        return patchlib.DiffStat.PathStatsList([patchlib.DiffStat.PathStats(diff_plus.get_file_path(strip_level=strip_level), diff_plus.get_diffstat_stats()) for diff_plus in self.diff_pluses])
+        return list(diffstat.PathDiffStats.iter_fm_diff_pluses(self.diff_pluses, strip_level))
     def report_trailing_whitespace(self, strip_level=None):
         strip_level = self._adjusted_strip_level(strip_level)
         reports = []
