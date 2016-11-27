@@ -86,7 +86,6 @@ class WDTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WDListene
           <menuitem action="wd_add_files_to_index"/>
           <menuitem action="wd_remove_files_in_index"/>
           <separator/>
-          <menuitem action="wd_cd_to_submodule"/>
           <menuitem action="wd_remove_submodules"/>
         </placeholder>
         <separator/>
@@ -115,6 +114,10 @@ class WDTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WDListene
         self._update_popup_cb()
         self.add_notification_cb(enotify.E_CHANGE_WD, self._update_popup_cb)
         self.get_selection().connect("changed", lambda seln: self.action_groups.update_condns(get_masked_seln_conditions(seln)))
+    def _handle_dir_activated(self, dir_path):
+        if not scm_gui_ifce.SCM.in_valid_wspce or scm_gui_ifce.SCM.is_sub_repo(dir_path):
+            with self.showing_busy():
+                scm_wspce.chdir(dir_path)
     def _update_popup_cb(self, **kwargs):
         if scm_gui_ifce.SCM.in_valid_wspce:
             self.set_popup("/scmic_files_popup")
@@ -130,13 +133,6 @@ class WDTreeView(file_tree.FileTreeView, enotify.Listener, scm_actions.WDListene
                 ("copy_file_to_index", Gtk.STOCK_COPY, _("Copy"), None,
                  _("Make a copy of the selected file in the index"),
                  lambda _action=None: self.git_do_copy_file_to_index(self.get_selected_fsi_path())
-                ),
-            ])
-        self.action_groups[scm_actions.AC_IN_SCM_PGND|AC_ONLY_SUBMODULES_SELECTED|actions.AC_SELN_UNIQUE].add_actions(
-            [
-                ("wd_cd_to_submodule", Gtk.STOCK_REMOVE, _("Change Directory To"), None,
-                 _("Chanage working directory to the selected submodule's root directory"),
-                 lambda _action=None: scm_wspce.chdir(self.get_selected_fsi_path())
                 ),
             ])
         self.action_groups[scm_actions.AC_IN_SCM_PGND|AC_ONLY_SUBMODULES_SELECTED|actions.AC_SELN_MADE].add_actions(
