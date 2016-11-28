@@ -22,7 +22,7 @@ from ...bab import enotify
 from ...bab import CmdFailure
 from ...bab import utils
 
-from ...patch_diff import patchlib
+from ...patch_diff import patches
 from ...patch_diff import diffstat
 
 from ...gtx import actions
@@ -181,7 +181,7 @@ class ShowCommitData:
         while index < len(lines):
             raise_if_malformed = diff_starts_at is not None
             starts_at = index
-            diff_plus, index = patchlib.DiffPlus.get_diff_plus_at(lines, index, raise_if_malformed)
+            diff_plus, index = patches.DiffPlus.get_diff_plus_at(lines, index, raise_if_malformed)
             if diff_plus:
                 if diff_starts_at is None:
                     diff_starts_at = starts_at

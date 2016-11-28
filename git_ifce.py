@@ -22,7 +22,7 @@ __author__ = "Peter Williams <pwil3058@gmail.com>"
 
 from ..bab import runext
 
-from ..patch_diff import patchlib
+from ..patch_diff import patches
 
 def index_is_empty():
     stdout = runext.run_get_cmd(["git", "status", "--porcelain", "--untracked-files=no"])
@@ -59,7 +59,7 @@ class Interface:
         ok_to_import, msg = cls.is_ready_for_import()
         if not ok_to_import:
             return CmdResult.error(stderr=msg)
-        epatch = patchlib.Patch.parse_text_file(patch_filepath)
+        epatch = patches.Patch.parse_text_file(patch_filepath)
         description = epatch.get_description()
         if not description:
             return CmdResult.error(stderr="Empty description")
