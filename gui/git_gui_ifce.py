@@ -33,7 +33,7 @@ from ...bab import utils
 
 from ...bab.decorators import singleton
 
-from ...patch_diff import patchlib
+from ...patch_diff import patches
 
 from ...gtx import table
 
@@ -133,7 +133,7 @@ class Interface:
         ok_to_import, msg = cls.is_ready_for_import()
         if not ok_to_import:
             return CmdResult.error(stderr=msg)
-        epatch = patchlib.Patch.parse_text_file(patch_filepath)
+        epatch = patches.Patch.parse_text_file(patch_filepath)
         description = epatch.get_description()
         if not description:
             return CmdResult.error(stderr="Empty description")
