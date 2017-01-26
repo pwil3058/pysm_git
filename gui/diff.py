@@ -64,7 +64,7 @@ class WdDiffTextWidget(diff.DiffTextsWidget, diff.FileAndRefreshActions):
 class WdDiffTextDialog(dialogue.ListenerDialog):
     def __init__(self, parent=None):
         flags = Gtk.DialogFlags.DESTROY_WITH_PARENT
-        dialogue.ListenerDialog.__init__(self, None, parent, flags, ())
+        dialogue.ListenerDialog.__init__(self, title=None, parent=parent, flags=flags, buttons=())
         title = "diff: %s" % utils.cwd_rel_home()
         self.set_title(title)
         dtw = WdDiffTextWidget()

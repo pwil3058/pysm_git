@@ -122,7 +122,7 @@ class CommitDialog(dialogue.ListenerDialog):
     COMMIT_WIDGET = CommitWidget
     def __init__(self, parent=None):
         flags = Gtk.DialogFlags.DESTROY_WITH_PARENT
-        dialogue.ListenerDialog.__init__(self, None, parent, flags)
+        dialogue.ListenerDialog.__init__(self, title=None, parent=parent, flags=flags)
         self.set_title(_("Commit Staged Changes: %s") % utils.cwd_rel_home())
         self.commit_widget = self.COMMIT_WIDGET()
         self.vbox.pack_start(self.commit_widget, expand=True, fill=True, padding=0)
@@ -166,7 +166,7 @@ class AmendCommitWidget(CommitWidget):
 class AmendCommitDialog(CommitDialog):
     COMMIT_WIDGET = AmendCommitWidget
     def __init__(self, parent=None):
-        CommitDialog.__init__(self, parent)
+        CommitDialog.__init__(self, parent=parent)
         self.set_title(_("Amend Last Commit: %s") % utils.cwd_rel_home())
 
 class ShowCommitData:
@@ -246,7 +246,7 @@ class ShowCommitWidget(Gtk.VPaned):
 class ShowCommitDialog(dialogue.ListenerDialog):
     def __init__(self, parent, commit_hash):
         flags = Gtk.DialogFlags.DESTROY_WITH_PARENT
-        dialogue.ListenerDialog.__init__(self, None, parent, flags, buttons=(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+        dialogue.ListenerDialog.__init__(self, title=None, parent=parent, flags=flags, buttons=(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         self.set_title(_("Show Commit: {}: {}").format(commit_hash, utils.cwd_rel_home()))
         self.vbox.pack_start(ShowCommitWidget(commit_hash), expand=True, fill=True, padding=0)
         self.connect("response", self._handle_response_cb)
