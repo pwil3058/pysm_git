@@ -21,15 +21,22 @@ import subprocess
 
 from ..bab import runext
 
-def check_ignored(paths):
-    return subprocess.run(["git", "check-ignore"] + paths, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
 def is_ignored_path(path):
-    return check_ignored([path]).returncode == 0
+    try:
+        return subprocess.run(["git", "check-ignore", "-q", path], stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode == 0
+    except AttributeError:
+        return subprocess.call(["git", "check-ignore", "-q", path], stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
+
+
+def is_not_ignored_path(path):
+    try:
+        return subprocess.run(["git", "check-ignore", "-q", path], stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode == 1
+    except AttributeError:
+        return subprocess.call(["git", "check-ignore", "-q", path], stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 1
 
 def get_recognized_subdirs(base_dir_path="."):
     path_iter = (os.path.join(dp, sdn) for dp, sdns, _fns in os.walk(base_dir_path) for sdn in sdns)
-    return [path for path in path_iter if check_ignored([path]).returncode == 1 and not path.startswith("./.git")]
+    return [path for path in path_iter if is_not_ignored_path(path) and not path.startswith("./.git")]
 
 _SUBMODULE_PATH_RE = re.compile(r"[a-fA-F0-9]+\s+(\S+)(\s+\S*)?")
 def get_submodule_paths():
