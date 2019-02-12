@@ -354,7 +354,7 @@ class Interface:
         return (True, "") if index_is_empty() else (False, _("Index is NOT empty\n"))
     @staticmethod
     def launch_difftool(*args):
-        return runext.run_cmd_in_bgnd(["git", "difftool", "--noprompt"] + list(args))
+        return runext.run_cmd_in_bgnd(["git", "difftool", "--no-prompt"] + list(args))
 
 def index_is_empty():
     stdout = runext.run_get_cmd(["git", "status", "--porcelain", "--untracked-files=no"])
